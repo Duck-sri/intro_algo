@@ -3,15 +3,21 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#define rep(i,N) for(int i=0,i<N;i++)
+#define repRev(i,N) for(int i=N,i>0;i--)
 
 #include "./Node.h"
 
 template <typename T>
 class BST {
     Node<T>* root;
+    int height=0;
 
     // prototypes
     Node<T>* find(T key,Node<T>* root);
+    void depthPre(Node<T>* root,int height);
+    int depthPost(Node<T>* root);
+    int addSubTreeSizes(Node<T>* root);
 public:
     BST() : root(nullptr) {}
     BST(Node<T>* root) : root(root) {}
@@ -19,30 +25,28 @@ public:
     Node<T>* find(T key);
     std::vector<std::vector<T>> print();
     std::ostream& operator << (std::ostream& os);
+    int depthPre();
+    int depthPost();
+    int addSubTreeSizes();
 };
 
 template <typename T>
 void BST<T>::insert(T val) {
     Node<T>* tmpNode = new Node<T>(val);
     if (this->root == nullptr) { 
-        tmpNode->lvl = 1;
         this->root = tmpNode;
     }
     else {
         Node<T>* currNode = this->root;
-        int count = 1;
         while(true) {
-            count++;
             if( val <= currNode->val) {
                 if (currNode->left == nullptr) {
-                    tmpNode->lvl = count;
                     currNode->left = tmpNode;
                     return;
                 } else currNode = currNode->left;
             }
             else {
                 if (currNode->right == nullptr) {
-                    tmpNode->lvl = count;
                     currNode->right = tmpNode;
                     return;
                 } else currNode = currNode->right;
@@ -111,4 +115,66 @@ std::ostream& operator << (std::ostream& os,BST<T>& tree) {
         lvl++;
     }
     return os;
+}
+
+template <typename T>
+void BST<T>::depthPre(Node<T>* root,int height) {
+    if (root->isLeaf()) { 
+        this->height = this->height>height ? this->height : height;
+    }
+
+    if (root->left != nullptr) depthPre(root->left,height+1);
+    if (root->right != nullptr) depthPre(root->right,height+1);
+}
+
+template <typename T>
+int BST<T>::depthPre() {
+    if (this->root == nullptr) return 0;
+    Node<T>* root = this->root;
+    int height = 1;
+
+    if (root->left != nullptr) depthPre(root->left,height+1);
+    if (root->right != nullptr) depthPre(root->right,height+1);
+
+    return this->height;
+}
+
+template <typename T>
+int BST<T>::depthPost(Node<T>* root) {
+    if (root == nullptr) return 0;
+
+    int lh = depthPost(root->left);
+    int rh = depthPost(root->right);
+    return (lh>rh?lh:rh) + 1;
+}
+
+template <typename T>
+int BST<T>::depthPost() {
+    if (this->root == nullptr) return 0;
+    Node<T>* root = this->root;
+    int height = 1;
+
+    int lh = depthPost(root->left);
+    int rh = depthPost(root->right);
+    return (lh>rh?lh:rh) + 1;
+}
+
+template <typename T>
+int BST<T>::addSubTreeSizes(Node<T>* root) {
+    if (root == nullptr) return 0;
+    if(root->isLeaf()) return 1;
+    int x =  addSubTreeSizes(root->left) + addSubTreeSizes(root->right)+1;
+
+    //std::cout << x << '\n';
+    return x;
+}
+
+template <typename T>
+int BST<T>::addSubTreeSizes() {
+    if (this->root == nullptr) return 0;
+    Node<T>* root = this->root;
+    if(root->isLeaf()) return 1;
+    int x =  addSubTreeSizes(root->left) + addSubTreeSizes(root->right)+1;
+    //std::cout << x << '\n';
+    return x;
 }
