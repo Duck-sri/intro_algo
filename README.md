@@ -4,7 +4,7 @@
 
 ### DSs
 
-- [x] BST
+- [x] BST (add next smaller and larger - lower and upper bound)
 - [ ] AVL
 - [ ] Hash Table
 - [ ] Graph+Adj list
