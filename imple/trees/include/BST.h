@@ -17,7 +17,9 @@ class BST {
     Node<T>* find(T key,Node<T>* root);
     void depthPre(Node<T>* root,int height);
     int depthPost(Node<T>* root);
+    void invertTree(Node<T>* root);
     int addSubTreeSizes(Node<T>* root);
+    void sortedOut(Node<T>* root);
 public:
     BST() : root(nullptr) {}
     BST(Node<T>* root) : root(root) {}
@@ -28,6 +30,8 @@ public:
     int depthPre();
     int depthPost();
     int addSubTreeSizes();
+    void invertTree();
+    void sortedOut();
 };
 
 template <typename T>
@@ -177,4 +181,45 @@ int BST<T>::addSubTreeSizes() {
     int x =  addSubTreeSizes(root->left) + addSubTreeSizes(root->right)+1;
     //std::cout << x << '\n';
     return x;
+}
+
+template <typename T>
+void BST<T>::invertTree(Node<T>* root) {
+    if (root == nullptr) return;
+
+    if(root->isLeaf())  return;
+    if(root->left != nullptr) invertTree(root->left);
+    if(root->right != nullptr) invertTree(root->right);
+    std::swap(root->left,root->right);
+}
+
+template <typename T>
+void BST<T>::invertTree() {
+    if (this->root == nullptr) return;
+    Node<T>* root = this->root;
+
+    if(root->isLeaf()) return;
+    if(root->left != nullptr) invertTree(root->left);
+    if(root->right != nullptr) invertTree(root->right);
+    std::swap(root->left,root->right);
+}
+
+template <typename T>
+void BST<T>::sortedOut(Node<T>* root) {
+    if (root == nullptr) return;
+
+    sortedOut(root->left);
+    std::cout << root->val << ' ';
+    sortedOut(root->right);
+}
+
+template <typename T>
+void BST<T>::sortedOut() {
+    Node<T>* root = this->root;
+    if (root == nullptr) return;
+
+    sortedOut(root->left);
+    std::cout << root->val << ' ';
+    sortedOut(root->right);
+    std:: cout << '\n';
 }
