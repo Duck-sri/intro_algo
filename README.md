@@ -4,7 +4,7 @@
 
 ### DSs
 
-- [*] BST
+- [x] BST
 - [ ] AVL
 - [ ] Hash Table
 - [ ] Graph+Adj list
@@ -12,8 +12,8 @@
 
 ### Algos
 
-- [*] Binary search + jump search
-- [*] DFS + BFS in trees
+- [x] Binary search + jump search
+- [x] DFS + BFS in trees
 - [ ] Diff sorting algos
 - [ ] Shortest path Algos
 - [ ] Single source maximum flow alogs
